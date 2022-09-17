@@ -9,6 +9,7 @@ row_max = 7+1
 nmbr = 10000000
 file_name = "data.txt"
 
+
 def rnd():
     return randrange(row_min, row_max)
 
@@ -17,8 +18,10 @@ def create_data(amount=nmbr):
     # A[m,n] B[n, k]
     # колличество столбцов в матрице А должно совпадать с колличество строк в матрице В
     def create_matrix(m=None, n=None) -> np.ndarray:
-        if m is None: m = rnd()
-        if n is None: n = rnd()
+        if m is None:
+            m = rnd()
+        if n is None:
+            n = rnd()
         return np.random.randint(numbers_min, numbers_max, (m, n))
 
     if (os.path.exists(file_name)):
@@ -33,7 +36,6 @@ def create_data(amount=nmbr):
                 for b in range(j):
                     file.write(f'{mtrx[a][b]} ')
             file.write("\n")
-            #print_matrix(mtrx)
 
 
 def run():
@@ -44,8 +46,6 @@ def run():
     print("Запуск")
     os.system("time ./main")
     print("Конец запуска")
-
-
 
 
 if __name__ == '__main__':

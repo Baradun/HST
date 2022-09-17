@@ -18,9 +18,9 @@ int **mat_init(int n_rows, int n_cols)
 
 void mat_destroy(int **m)
 {
-	free(m[0]); free(m);
+	free(m[0]);
+	free(m);
 }
-
 
 int **mul(int n_a_rows, int n_a_cols, int *const *a, int n_b_cols, int *const *b)
 {
@@ -77,15 +77,14 @@ int main()
 		matrix2 = next_matrix(&mat2_row, &mat2_col);
 		if (matrix2 == NULL)
 			break;
-		//printf("mul\n");
-		//printf("[%d, %d]\n", mat1_row, mat1_col);
-		//printf("[%d, %d]\n", mat2_row, mat2_col);
+		// printf("mul\n");
+		// printf("[%d, %d]\n", mat1_row, mat1_col);
+		// printf("[%d, %d]\n", mat2_row, mat2_col);
 		matrix_tmp = mul(mat1_row, mat1_col, matrix1, mat2_row, matrix2);
 		mat_destroy(matrix1);
 		mat_destroy(matrix2);
 		matrix1 = matrix_tmp;
 		mat1_col = mat2_col;
-		// освобождение массива
 	}
 	printf("Успех!");
 	return 0;
