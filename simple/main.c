@@ -2,8 +2,19 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <sys/time.h>
+
 
 FILE *fptr;
+int SIZE = 10000000;
+
+struct m
+{
+	int row;
+	int col;
+	int **matrix;
+};
+
 
 int **mat_init(int n_rows, int n_cols)
 {
@@ -68,24 +79,49 @@ int main()
 	int **matrix1;
 	int **matrix2;
 	int **matrix_tmp;
+	
+	// struct m matrix_list[SIZE];
+	struct m* matrix_list = malloc(SIZE * sizeof(struct m));
 
 	int mat1_row, mat1_col, mat2_row, mat2_col;
-
-	matrix1 = next_matrix(&mat1_row, &mat1_col);
-	while (true)
+	int i;
+	for(i = 0; i < SIZE; ++i)
 	{
-		matrix2 = next_matrix(&mat2_row, &mat2_col);
-		if (matrix2 == NULL)
+		matrix_tmp = next_matrix(&mat1_row, &mat1_col);
+		if (matrix1 == NULL)
 			break;
-		// printf("mul\n");
-		// printf("[%d, %d]\n", mat1_row, mat1_col);
-		// printf("[%d, %d]\n", mat2_row, mat2_col);
+		matrix_list[i].row = mat1_row;
+		matrix_list[i].col = mat1_col;
+		matrix_list[i].matrix = matrix_tmp;
+	}
+
+	// start timer 
+	struct timeval t1, t2;
+	double elapsedTime;
+	gettimeofday(&t1, NULL);
+	//
+
+	for(i = 0; i < SIZE; ++i){
+		if(i == 0){
+			mat1_row = matrix_list[i].row;
+			mat1_col = matrix_list[i].col;
+			matrix1 = matrix_list[i].matrix;
+			continue;
+		}
+		mat2_row = matrix_list[i].row;
+		mat2_col = matrix_list[i].col;
+		matrix2 = matrix_list[i].matrix;
+
 		matrix_tmp = mul(mat1_row, mat1_col, matrix1, mat2_row, matrix2);
-		mat_destroy(matrix1);
-		mat_destroy(matrix2);
 		matrix1 = matrix_tmp;
 		mat1_col = mat2_col;
 	}
-	printf("Успех!");
+	// end timer
+	gettimeofday(&t2, NULL);
+	//
+	elapsedTime = (t2.tv_sec - t1.tv_sec) * 1000.0;      // sec to ms
+    elapsedTime += (t2.tv_usec - t1.tv_usec) / 1000.0;
+    printf("t: %f \n", elapsedTime);
+
 	return 0;
 }
